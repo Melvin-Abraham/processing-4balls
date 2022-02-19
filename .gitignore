@@ -1,0 +1,10 @@
+# Compiled class file
+*.class
+
+# Log file
+*.log
+
+# Directories
+.gradle/**/*
+.idea/**/*
+build/**/*
