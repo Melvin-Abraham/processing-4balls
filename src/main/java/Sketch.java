@@ -1,36 +1,47 @@
 import processing.core.PApplet;
 
 public class Sketch extends PApplet {
+    public static PApplet sketch;
+
     public static final int WIDTH = 1000;
     public static final int HEIGHT = 500;
-    public static final int CIRCLE_DIAMETER = 20;
-    public int[] posX = {0, 0, 0, 0};
+    public static Ball[] balls = new Ball[4];
 
     public static void main(String[] args) {
         PApplet.main(Sketch.class, args);
     }
 
     @Override
-    public void draw() {
-        for (int i = 0; i < posX.length; i++) {
-            drawCircle(i);
+    public void setup() {
+        // Let the current `PApplet` instance be used by other
+        // class(es) to manipulate the sketch
+        sketch = this;
+
+        for (int i = 0; i < 4; i++) {
+            int level = i + 1;
+            balls[i] = new Ball(level);
         }
     }
 
-    private void drawCircle(int index) {
-        float posY = HEIGHT * ((index + 1) / 5f);
-        ellipse(posX[index], posY, CIRCLE_DIAMETER, CIRCLE_DIAMETER);
-        incrementPosX(index);
-    }
-
-    private void incrementPosX(int index) {
-        int incrementRate = index + 1;
-        posX[index] += incrementRate;
+    @Override
+    public void draw() {
+        for (Ball ball : balls) {
+            ball.draw();
+            ball.update();
+        }
     }
 
     @Override
     public void settings() {
         super.settings();
         size(WIDTH, HEIGHT);
+    }
+
+    /**
+     * [singleton] Returns a <code>PApplet</code> instance to be used by
+     * other classes to manipulate the sketch.
+     */
+    public static PApplet getSketchInstance() {
+        return sketch;
     }
 }
